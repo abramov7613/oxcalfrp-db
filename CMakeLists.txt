@@ -74,7 +74,11 @@ target_include_directories(lsqlite3 PRIVATE ${lua_SOURCE_DIR})
 set_target_properties(lua PROPERTIES PREFIX "")
 set_target_properties(sqlite3 PROPERTIES PREFIX "")
 set_target_properties(lsqlite3 PROPERTIES PREFIX "")
-target_compile_definitions(lua PRIVATE $<$<PLATFORM_ID:Linux>:LUA_USE_LINUX>)
+target_compile_definitions(lua PRIVATE 
+  $<$<PLATFORM_ID:Linux>:LUA_USE_LINUX>
+  $<$<PLATFORM_ID:Darwin>:LUA_USE_MACOSX>
+  $<$<PLATFORM_ID:Windows>:LUA_USE_WINDOWS>
+)
 target_link_libraries(lsqlite3 PRIVATE lua sqlite3)
 target_link_libraries(lua_interpreter PRIVATE
   lua
