@@ -90,6 +90,7 @@ set(DBOUT_FILE ${PROJECT_BINARY_DIR}/database.sqlite3)
 set(DBSRC_HEAD ${CMAKE_CURRENT_SOURCE_DIR}/src/head.lua)
 set(DBSRC_BODY_
   ${CMAKE_CURRENT_SOURCE_DIR}/src/psalom.lua
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/book.lua
   # ...
 )
 string(REPLACE ";" "$<SEMICOLON>" DBSRC_BODY "${DBSRC_BODY_}")
@@ -120,6 +121,8 @@ add_custom_command(
     ${DBOUT_FILE}
   DEPENDS
     ${DBSRC_FULL}
+  COMMAND
+    ${CMAKE_COMMAND} -E rm -f ${DBOUT_FILE}
   COMMAND
     lua_interpreter ${DBSRC_FULL} ${DBOUT_FILE}
   VERBATIM

@@ -3,6 +3,10 @@ function(cat_files IN_FILE OUT_FILE)
   file(APPEND ${OUT_FILE} "${CONTENTS}\n")
 endfunction()
 
+if(EXISTS ${DBSRC_FULL})
+  file(REMOVE ${DBSRC_FULL})
+endif()
+
 cat_files(${DBSRC_HEAD} ${DBSRC_FULL})
 foreach(F IN LISTS DBSRC_BODY)
   cat_files(${F} ${DBSRC_FULL})
