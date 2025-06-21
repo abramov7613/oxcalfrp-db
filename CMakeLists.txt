@@ -70,18 +70,62 @@ add_library(lsqlite3 SHARED ${lsqlite3_SOURCE_DIR}/lsqlite3.c)
 target_include_directories(lsqlite3 PUBLIC $<BUILD_INTERFACE:${lsqlite3_SOURCE_DIR}>)
 target_include_directories(lsqlite3 PRIVATE ${lua_SOURCE_DIR})
 
-# set properties
+# set targets properties
 set_target_properties(lua PROPERTIES PREFIX "")
 set_target_properties(sqlite3 PROPERTIES PREFIX "")
 set_target_properties(lsqlite3 PROPERTIES PREFIX "")
-target_compile_definitions(lua PRIVATE 
+target_compile_definitions(lua PRIVATE
   $<$<PLATFORM_ID:Linux>:LUA_USE_LINUX>
   $<$<PLATFORM_ID:Darwin>:LUA_USE_MACOSX>
-  $<$<PLATFORM_ID:Windows>:LUA_USE_WINDOWS>
 )
 target_link_libraries(lsqlite3 PRIVATE lua sqlite3)
 target_link_libraries(lua_interpreter PRIVATE
   lua
   sqlite3
   $<$<PLATFORM_ID:Linux>:m>
+)
+
+# define database target
+set(DBOUT_FILE ${PROJECT_BINARY_DIR}/database.sqlite3)
+set(DBSRC_HEAD ${CMAKE_CURRENT_SOURCE_DIR}/src/head.lua)
+set(DBSRC_BODY_
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/psalom.lua
+  # ...
+)
+string(REPLACE ";" "$<SEMICOLON>" DBSRC_BODY "${DBSRC_BODY_}")
+set(DBSRC_FOOT ${CMAKE_CURRENT_SOURCE_DIR}/src/foot.lua)
+set(DBSRC_FULL ${PROJECT_BINARY_DIR}/db_generator.lua)
+set(CATFILES_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/cat_files.cmake)
+
+add_custom_command(
+  OUTPUT
+    ${DBSRC_FULL}
+  DEPENDS
+    ${DBSRC_HEAD}
+    ${DBSRC_BODY}
+    ${DBSRC_FOOT}
+    ${CATFILES_SCRIPT}
+  COMMAND
+    ${CMAKE_COMMAND}
+      -D DBSRC_HEAD=${DBSRC_HEAD}
+      -D DBSRC_BODY=${DBSRC_BODY}
+      -D DBSRC_FOOT=${DBSRC_FOOT}
+      -D DBSRC_FULL=${DBSRC_FULL}
+      -P ${CATFILES_SCRIPT}
+  VERBATIM
+)
+
+add_custom_command(
+  OUTPUT
+    ${DBOUT_FILE}
+  DEPENDS
+    ${DBSRC_FULL}
+  COMMAND
+    lua_interpreter ${DBSRC_FULL} ${DBOUT_FILE}
+  VERBATIM
+)
+
+add_custom_target(gen_database ALL
+  DEPENDS ${DBOUT_FILE}
+  VERBATIM
 )

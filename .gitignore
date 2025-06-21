@@ -35,3 +35,4 @@
 build/
 extern/
 *.log
+CPM.cmake
