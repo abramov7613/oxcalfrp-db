@@ -89,8 +89,13 @@ target_link_libraries(lua_interpreter PRIVATE
 set(DBOUT_FILE ${PROJECT_BINARY_DIR}/database.sqlite3)
 set(DBSRC_HEAD ${CMAKE_CURRENT_SOURCE_DIR}/src/head.lua)
 set(DBSRC_BODY_
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/psalom.lua
+  # здесь порядок файлов имеет значение
+  # и необходимы абсолютные пути, т.к.
+  # переменная передается во внешний скрипт
+  # для генерации одного общего файла
   ${CMAKE_CURRENT_SOURCE_DIR}/src/book.lua
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/psalom.lua
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/evangelie.lua
   # ...
 )
 string(REPLACE ";" "$<SEMICOLON>" DBSRC_BODY "${DBSRC_BODY_}")

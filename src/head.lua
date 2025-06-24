@@ -22,18 +22,17 @@ db:exec[[
   )   ;
 
   create table зачало_евангелия (
-    зачало_евангелия_id INTEGER not null,
+    комментарий         TEXT    PRIMARY KEY,
+    номер               INTEGER not null,
     книга_id            INTEGER not null,
-    комментарий         TEXT    not null,
     текст_ру            TEXT    not null,
-    текст_цс            TEXT    not null,
-    constraint pk_зачало_евангелия primary key (зачало_евангелия_id,книга_id)
+    текст_цс            TEXT    not null
   )   ;
 
   create table зачало_апостола (
-    зачало_апостола_id INTEGER PRIMARY KEY,
+    комментарий        TEXT    PRIMARY KEY,
+    номер              INTEGER not null,
     книга_id           INTEGER not null,
-    комментарий        TEXT    not null,
     текст_ру           TEXT    not null,
     текст_цс           TEXT    not null
   )   ;
@@ -68,7 +67,48 @@ function add_book(t)
   )
 end
 
--- function add_evangelie(t)
+function add_evangelie_matfea(t)
+  db:exec(
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от матфея\"), \"%s\", \"%s\");",
+                    t["комментарий"],
+                    t["номер"],
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
 
--- end
+function add_evangelie_marka(t)
+  db:exec(
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от марка\"), \"%s\", \"%s\");",
+                    t["комментарий"],
+                    t["номер"],
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
 
+function add_evangelie_luki(t)
+  db:exec(
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от луки\"), \"%s\", \"%s\");",
+                    t["комментарий"],
+                    t["номер"],
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
+
+function add_evangelie_ioanna(t)
+  db:exec(
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от иоанна\"), \"%s\", \"%s\");",
+                    t["комментарий"],
+                    t["номер"],
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
+
+-- function add_apostol(t)
