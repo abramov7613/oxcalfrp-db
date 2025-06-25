@@ -68,10 +68,12 @@ function add_book(t)
 end
 
 function add_evangelie_matfea(t)
+  local book_id = "SELECT книга_id FROM книга WHERE название=\"евангелие от матфея\""
   db:exec(
-    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от матфея\"), \"%s\", \"%s\");",
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (%s), \"%s\", \"%s\");",
                     t["комментарий"],
                     t["номер"],
+                    book_id,
                     t["текст_ру"],
                     t["текст_цс"]
     )
@@ -79,10 +81,12 @@ function add_evangelie_matfea(t)
 end
 
 function add_evangelie_marka(t)
+  local book_id = "SELECT книга_id FROM книга WHERE название=\"евангелие от марка\""
   db:exec(
-    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от марка\"), \"%s\", \"%s\");",
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (%s), \"%s\", \"%s\");",
                     t["комментарий"],
                     t["номер"],
+                    book_id,
                     t["текст_ру"],
                     t["текст_цс"]
     )
@@ -90,10 +94,12 @@ function add_evangelie_marka(t)
 end
 
 function add_evangelie_luki(t)
+  local book_id = "SELECT книга_id FROM книга WHERE название=\"евангелие от луки\""
   db:exec(
-    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от луки\"), \"%s\", \"%s\");",
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (%s), \"%s\", \"%s\");",
                     t["комментарий"],
                     t["номер"],
+                    book_id,
                     t["текст_ру"],
                     t["текст_цс"]
     )
@@ -101,14 +107,74 @@ function add_evangelie_luki(t)
 end
 
 function add_evangelie_ioanna(t)
+  local book_id = "SELECT книга_id FROM книга WHERE название=\"евангелие от иоанна\""
   db:exec(
-    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (SELECT книга_id FROM книга WHERE название=\"евангелие от иоанна\"), \"%s\", \"%s\");",
+    string.format("INSERT INTO \"зачало_евангелия\" VALUES (\"%s\", %d, (%s), \"%s\", \"%s\");",
                     t["комментарий"],
                     t["номер"],
+                    book_id,
                     t["текст_ру"],
                     t["текст_цс"]
     )
   )
 end
 
--- function add_apostol(t)
+function add_apostol(t)
+  local comment = t["комментарий"]
+  local book_id = ""
+  if string.find(comment, "^Деян") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Деяния святых Апостолов\""
+  elseif string.find(comment, "^Иак") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание Иаковле\""
+  elseif string.find(comment, "^1 Пет") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание первое святаго апостола Петра\""
+  elseif string.find(comment, "^2 Пет") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание второе святаго апостола Петра\""
+  elseif string.find(comment, "^1 Ин") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание первое святаго апостола Иоанна Богослова\""
+  elseif string.find(comment, "^2 Ин") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание второе святаго апостола Иоанна Богослова\""
+  elseif string.find(comment, "^3 Ин") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание третье святаго апостола Иоанна Богослова\""
+  elseif string.find(comment, "^Иуд") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание Иудино\""
+  elseif string.find(comment, "^Рим") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Римлянам Апостола Павла\""
+  elseif string.find(comment, "^1 Кор") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Первое Послание к Коринфянам Апостола Павла\""
+  elseif string.find(comment, "^2 Кор") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Второе Послание к Коринфянам Апостола Павла\""
+  elseif string.find(comment, "^Гал") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Галатам Апостола Павла\""
+  elseif string.find(comment, "^Еф") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Ефесянам Апостола Павла\""
+  elseif string.find(comment, "^Флп") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Филиппийцам Апостола Павла\""
+  elseif string.find(comment, "^Кол") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Колоссянам Апостола Павла\""
+  elseif string.find(comment, "^1 Сол") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Первое Послание к Фессалоникийцам Апостола Павла\""
+  elseif string.find(comment, "^2 Сол") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Второе Послание к Фессалоникийцам Апостола Павла\""
+  elseif string.find(comment, "^1 Тим") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Первое Послание к Тимофею Апостола Павла\""
+  elseif string.find(comment, "^2 Тим") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Второе Послание к Тимофею Апостола Павла\""
+  elseif string.find(comment, "^Тит") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Титу Апостола Павла\""
+  elseif string.find(comment, "^Флм") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Филимону Апостола Павла\""
+  elseif string.find(comment, "^Евр") then
+    book_id = "SELECT книга_id FROM книга WHERE название=\"Послание к Евреям Апостола Павла\""
+  end
+  assert(#book_id ~= 0)
+  db:exec(
+    string.format("INSERT INTO \"зачало_апостола\" VALUES (\"%s\", %d, (%s), \"%s\", \"%s\");",
+                    comment,
+                    t["номер"],
+                    book_id,
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
