@@ -36,6 +36,13 @@ db:exec[[
     текст_ру           TEXT    not null,
     текст_цс           TEXT    not null
   )   ;
+
+  create table ирмос (
+    ирмос_id        INTEGER PRIMARY KEY,
+    глас            INTEGER not null,
+    текст_ру        TEXT    not null,
+    текст_цс        TEXT    not null
+  )   ;
 ]]
 
 function add_psalom(t)
@@ -173,6 +180,16 @@ function add_apostol(t)
                     comment,
                     t["номер"],
                     book_id,
+                    t["текст_ру"],
+                    t["текст_цс"]
+    )
+  )
+end
+
+function add_irmos(t)
+  db:exec(
+    string.format("INSERT INTO \"ирмос\" VALUES (NULL, %d, \"%s\", \"%s\");",
+                    t["глас"],
                     t["текст_ру"],
                     t["текст_цс"]
     )

@@ -97,6 +97,7 @@ set(DBSRC_BODY_
   ${CMAKE_CURRENT_SOURCE_DIR}/src/psalom.lua
   ${CMAKE_CURRENT_SOURCE_DIR}/src/evangelie.lua
   ${CMAKE_CURRENT_SOURCE_DIR}/src/apostol.lua
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/irmos.lua
   # ...
 )
 string(REPLACE ";" "$<SEMICOLON>" DBSRC_BODY "${DBSRC_BODY_}")
